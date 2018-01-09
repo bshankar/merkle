@@ -31,6 +31,18 @@ class MerkleNode {
     // recursively update hash of parents (if any)
     if (this.parent !== null) this.parent.computeHash()
   }
+
+  setLeftNode (node) {
+    this.leftNode = node
+    this.leftNode.parent = this
+    this.computeHash()
+  }
+
+  setRightNode (node) {
+    this.rightNode = node
+    this.rightNode.parent = this
+    this.computeHash()
+  }
 }
 
 module.exports = {MerkleNode}

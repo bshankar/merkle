@@ -23,11 +23,13 @@ class MerkleNode {
     return this.leftNode === null && this.rightNode === null
   }
 
-  computeHash () {
+  computeHash (msg) {
     if (this.leftNode !== null) {
       this.hash = secureHash(this.leftNode.hash +
         (this.rightNode !== null) ? '' : this.rightNode.hash)
-    }
+    } else this.hash = secureHash(msg)
+    // recursively update hash of parents (if any)
+    if (this.parent !== null) this.parent.computeHash()
   }
 }
 

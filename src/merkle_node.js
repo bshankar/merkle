@@ -8,7 +8,7 @@ class MerkleNode {
     this.parent = null
     if (arguments.length === 1 && typeof arguments[0] === 'string') {
       // this is a leaf node
-      this.hash = arguments[0]
+      this.hash = secureHash(arguments[0])
     } else {
       // this is a parent node
       this.leftNode = arguments[0]
@@ -26,7 +26,7 @@ class MerkleNode {
   computeHash (msg) {
     if (this.leftNode !== null) {
       this.hash = secureHash(this.leftNode.hash +
-        (this.rightNode !== null) ? '' : this.rightNode.hash)
+        (this.rightNode !== null ? this.rightNode.hash : ''))
     } else this.hash = secureHash(msg)
     // recursively update hash of parents (if any)
     if (this.parent !== null) this.parent.computeHash()
@@ -48,7 +48,7 @@ class MerkleNode {
     // verify the hash of the node w.r.t to its children
     if (this.isLeaf() === true) return true
     if (this.rightNode === null) return this.hash === this.leftNode.hash
-    return secureHash(this.leftNode.hash + this.rightNode.hash)
+    return this.hash === secureHash(this.leftNode.hash + this.rightNode.hash)
   }
 }
 

@@ -43,6 +43,13 @@ class MerkleNode {
     this.rightNode.parent = this
     this.computeHash()
   }
+
+  verifyHash () {
+    // verify the hash of the node w.r.t to its children
+    if (this.isLeaf() === true) return true
+    if (this.rightNode === null) return this.hash === this.leftNode.hash
+    return secureHash(this.leftNode.hash + this.rightNode.hash)
+  }
 }
 
 module.exports = {MerkleNode}

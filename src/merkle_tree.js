@@ -32,10 +32,26 @@ class MerkleTree {
       this.buildTree(parents)
     }
   }
+
+  findLeaf (hash) {
+    return this.leaves.filter(l => l.hash === hash)[0]
+  }
+
   // audit proof
-  // verify audit proof ?
+  auditProof (leafHash) {
+    const auditTrail = []
+    const leaf = this.findLeaf(leafHash)
+    if (leaf !== undefined) this.buildAuditTrail(auditTrail, leaf.parent, leaf)
+    return auditTrail
+  }
+
+  buildAuditTrail (auditTrail, parent, leaf) {
+    // TODO implement this
+  }
+
+  // verify audit proof
   // consistency proof
-  // verify consistency proof ?
+  // verify consistency proof
 }
 
 module.exports = {MerkleTree}

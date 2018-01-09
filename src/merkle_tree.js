@@ -1,4 +1,4 @@
-const MerkleNode = require('./merkle_node')
+const {MerkleNode} = require('./merkle_node')
 
 class MerkleTree {
   constructor () {
@@ -32,6 +32,10 @@ class MerkleTree {
       this.buildTree(parents)
     }
   }
+  // audit proof
+  // verify audit proof ?
+  // consistency proof
+  // verify consistency proof ?
 }
 
 module.exports = {MerkleTree}

@@ -6,7 +6,7 @@ class MerkleNode {
     this.leftNode = null
     this.rightNode = null
     this.parent = null
-    if (arguments.length === 1 && arguments[0] instanceof String === true) {
+    if (arguments.length === 1 && typeof arguments[0] === 'string') {
       // this is a leaf node
       this.hash = arguments[0]
     } else {

@@ -2,13 +2,13 @@ const {MerkleNode} = require('./merkle_node')
 
 class MerkleTree {
   constructor () {
-    this.rootNode = new MerkleNode()
+    this.rootNode = null
     this.nodes = []
     this.leaves = []
   }
 
   appendLeaf (arg) {
-    const node = (arg instanceof String === true)
+    const node = (typeof arg === 'string')
       ? new MerkleNode(arg) : arg
     this.nodes.push(node)
     this.leaves.push(node)

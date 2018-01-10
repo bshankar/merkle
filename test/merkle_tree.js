@@ -47,11 +47,13 @@ describe('MerkleTree', function () {
       it('audit proof of an existing leaf should be non empty', function () {
         assert.notEqual(mt.auditProof(existingHash).length, 0)
       })
-      it('verify audit proof returns true', function () {
+      it('verify audit proof returns true for hi', function () {
         const trail = mt.auditProof(existingHash)
-        console.log('rootNode: ', mt.rootNode.hash)
-        console.log('trail: ', trail)
-        assert.equal(mt.verifyAuditProof(mt.rootNode.hash, secureHash('hi'), trail), true)
+        assert.equal(mt.verifyAuditProof(mt.rootNode.hash, existingHash, trail), true)
+      })
+      it('verify audit proof returns true for what', function () {
+        const trail = mt.auditProof(secureHash('what'))
+        assert.equal(mt.verifyAuditProof(mt.rootNode.hash, secureHash('what'), trail), true)
       })
     })
   })

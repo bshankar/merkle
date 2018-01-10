@@ -36,6 +36,12 @@ describe('MerkleTree', function () {
       it('verify hashes of all nodes (using inbuilt function)', function () {
         assert.equal(mt.nodes.every(n => n.verifyHash() === true), true)
       })
+      it('verify that root node has 3 leaves', function () {
+        assert.equal(mt.rootNode.getLeaves(mt.rootNode).length, 3)
+      })
+      it('verify all the leaves of root right node', function () {
+        assert.equal(mt.rootNode.getLeaves(mt.rootNode.rightNode)[0].hash, secureHash('what'))
+      })
     })
 
     describe('audit proof on this tree', function () {

@@ -21,18 +21,30 @@ describe('MerkleTree', function () {
   describe('build tree (with 3 leaves)', function () {
     const nodes = ['hi', 'there', 'what']
     const mt = new MerkleTree()
-    mt.buildTree(nodes.map(s => new MerkleNode(s)))
-    it('hash of root left left child matches', function () {
-      assert.equal(mt.rootNode.leftNode.leftNode.hash, secureHash('hi'))
+    mt.nodes = mt.leaves = nodes.map(s => new MerkleNode(s))
+    mt.buildTree()
+    describe('basic binary tree checks', function () {
+      it('hash of root left left child matches', function () {
+        assert.equal(mt.rootNode.leftNode.leftNode.hash, secureHash('hi'))
+      })
+      it('hash of root left right child matches', function () {
+        assert.equal(mt.rootNode.leftNode.rightNode.hash, secureHash('there'))
+      })
+      it('hash of root left child matches', function () {
+        assert.equal(mt.rootNode.leftNode.hash, secureHash(secureHash('hi') + secureHash('there')))
+      })
+      it('verify hashes of all nodes (using inbuilt function)', function () {
+        assert.equal(mt.nodes.every(n => n.verifyHash() === true), true)
+      })
     })
-    it('hash of root left right child matches', function () {
-      assert.equal(mt.rootNode.leftNode.rightNode.hash, secureHash('there'))
-    })
-    it('hash of root left child matches', function () {
-      assert.equal(mt.rootNode.leftNode.hash, secureHash(secureHash('hi') + secureHash('there')))
-    })
-    it('verify hashes of all nodes (using inbuilt function)', function () {
-      assert.equal(mt.nodes.every(n => n.verifyHash() === true), true)
+
+    describe('audit proof on this tree', function () {
+      it('audit proof of non-existing node should return empty list', function () {
+        assert.equal(mt.auditProof(secureHash('hello')).length, 0)
+      })
+      it('audit proof of an existing leaf should be non empty', function () {
+        assert.notEqual(mt.auditProof(secureHash('hi')).length, 0)
+      })
     })
   })
 })

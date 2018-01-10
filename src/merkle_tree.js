@@ -1,5 +1,6 @@
 const {MerkleNode} = require('./merkle_node')
 const {Direction, MerkleProofHash} = require('./merkle_proof_hash')
+const {secureHash} = require('./util')
 
 class MerkleTree {
   constructor () {
@@ -55,6 +56,12 @@ class MerkleTree {
       }
       this.buildAuditTrail(auditTrail, parent.parent, child.parent)
     }
+  }
+
+  verifyAuditProof (rootHash, leafHash, auditTrail) {
+    const testHash = auditTrail.reduce((a, e) => e.direction === Direction.LEFT
+      ? secureHash(a + e.hash) : secureHash(e.hash + a), leafHash)
+    return rootHash === testHash
   }
 
   // verify audit proof

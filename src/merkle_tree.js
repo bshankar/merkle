@@ -1,4 +1,5 @@
 const {MerkleNode} = require('./merkle_node')
+const {Direction, MerkleProofHash} = require('./merkle_proof_hash')
 
 class MerkleTree {
   constructor () {
@@ -45,8 +46,15 @@ class MerkleTree {
     return auditTrail
   }
 
-  buildAuditTrail (auditTrail, parent, leaf) {
-    // TODO implement this
+  buildAuditTrail (auditTrail, parent, child) {
+    if (parent !== null) {
+      const [nextChild, direction] = parent.leftNode === child
+        ? [parent.rightNode, Direction.LEFT] : [parent.leftNode, Direction.RIGHT]
+      if (nextChild !== null) {
+        auditTrail.push(new MerkleProofHash(nextChild.hash, direction))
+      }
+      this.buildAuditTrail(auditTrail, parent.parent, child.parent)
+    }
   }
 
   // verify audit proof

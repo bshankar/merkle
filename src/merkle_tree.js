@@ -64,9 +64,35 @@ class MerkleTree {
     return rootHash === testHash
   }
 
-  // verify audit proof
-  // consistency proof
-  // verify consistency proof
+  consistencyProof (totalLeaves) {
+    const hashNodes = []
+    const n = Math.floor(Math.log2(totalLeaves))
+    let node = this.leaves[0]
+    for (let i = 0; i < n; ++i) node = node.parent
+    let leavesFound = node.getLeaves(node).length
+    if (totalLeaves > leavesFound) {
+      let siblingNode = node.parent.rightNode
+      while (true) {
+        const snLeavesCount = siblingNode.getLeaves().length
+        if (snLeavesCount + leavesFound === totalLeaves) {
+          hashNodes.push(new MerkleProofHash(siblingNode.hash, Direction.OLDROOT))
+          break
+        }
+        if (totalLeaves - leavesFound > snLeavesCount) {
+          hashNodes.push(new MerkleProofHash(siblingNode.hash, Direction.OLDROOT))
+          siblingNode = siblingNode.parent.rightNode // what ?
+          leavesFound += snLeavesCount
+        } else siblingNode = siblingNode.leftNode
+      }
+    }
+    // rule 3: apply consistency audit proof
+    return hashNodes
+  }
+
+  verifyConsistencyProof () {
+    
+  }
+  // TODO verify consistency proof
 }
 
 module.exports = {MerkleTree}

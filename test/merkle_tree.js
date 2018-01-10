@@ -39,11 +39,19 @@ describe('MerkleTree', function () {
     })
 
     describe('audit proof on this tree', function () {
+      const existingHash = secureHash('hi')
+      const nonExistingHash = secureHash('hello')
       it('audit proof of non-existing node should return empty list', function () {
-        assert.equal(mt.auditProof(secureHash('hello')).length, 0)
+        assert.equal(mt.auditProof(nonExistingHash).length, 0)
       })
       it('audit proof of an existing leaf should be non empty', function () {
-        assert.notEqual(mt.auditProof(secureHash('hi')).length, 0)
+        assert.notEqual(mt.auditProof(existingHash).length, 0)
+      })
+      it('verify audit proof returns true', function () {
+        const trail = mt.auditProof(existingHash)
+        console.log('rootNode: ', mt.rootNode.hash)
+        console.log('trail: ', trail)
+        assert.equal(mt.verifyAuditProof(mt.rootNode.hash, secureHash('hi'), trail), true)
       })
     })
   })

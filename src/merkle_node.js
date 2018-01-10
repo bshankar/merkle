@@ -53,6 +53,16 @@ class MerkleNode {
     if (this.rightNode === null) return this.hash === this.leftNode.hash
     return this.hash === secureHash(this.leftNode.hash + this.rightNode.hash)
   }
+
+  getLeaves (node, leaves = []) {
+    // get leaves under this node
+    if (node === null) return leaves
+    if (node.leftNode === null && node.rightNode === null) {
+      return [...leaves, node]
+    }
+    return [...this.getLeaves(node.leftNode, leaves),
+      ...this.getLeaves(node.rightNode, leaves)]
+  }
 }
 
 module.exports = {MerkleNode}

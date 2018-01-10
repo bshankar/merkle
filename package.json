@@ -4,7 +4,7 @@
   "description": "Merkle tree implementation in Javascript",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test && standard"
   },
   "keywords": [
     "merkle tree",
@@ -17,6 +17,10 @@
     "crypto-js": "^3.1.9-1"
   },
   "devDependencies": {
-    "mocha": "^4.1.0"
+    "mocha": "^4.1.0",
+    "standard": "^10.0.3"
+  },
+  "standard": {
+    "env": [ "mocha" ]
   }
 }

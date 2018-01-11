@@ -83,5 +83,10 @@ describe('MerkleTree', function () {
       const oldHash = secureHash(secureHash(secureHash('hi') + secureHash('there')) + secureHash('what'))
       assert.equal(mt.verifyConsistencyProof(oldHash, mt.consistencyProof(3)), true)
     })
+    it('verify consistency audit proof for 3', function () {
+      const cp = mt.consistencyProof(3)
+      const cap = mt.consistencyAuditProof(cp[cp.length - 1].hash)
+      assert.equal(mt.verifyAuditProof(mt.rootNode.hash, cp[cp.length - 1].hash, cap), true)
+    })
   })
 })

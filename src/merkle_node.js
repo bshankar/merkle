@@ -75,7 +75,7 @@ class MerkleNode {
       return arr
     }
     return [...this.where(f, node.leftNode, arr),
-            ...this.where(f, node.rightNode, arr)]
+      ...this.where(f, node.rightNode, arr)]
   }
 
   getLeaves (node, leaves = []) {

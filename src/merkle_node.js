@@ -55,6 +55,15 @@ class MerkleNode {
     return this.hash === secureHash(this.leftNode.hash + this.rightNode.hash)
   }
 
+  single (f, node) {
+    // find the first child satisfying the condition
+    if (node === undefined) node = this
+    if (node !== null) {
+      if (f(node) === true) return node
+      return this.single(f, node.leftNode) || this.single(f, node.rightNode)
+    }
+  }
+
   where (f, node, arr = []) {
     // find all the children satisfying the condition
     if (node === undefined) node = this

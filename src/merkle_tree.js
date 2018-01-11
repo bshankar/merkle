@@ -80,7 +80,7 @@ class MerkleTree {
         }
         if (totalLeaves - leavesFound > snLeavesCount) {
           hashNodes.push(new MerkleProofHash(siblingNode.hash, Direction.OLDROOT))
-          siblingNode = siblingNode.parent.rightNode // what ?
+          siblingNode = siblingNode.parent.rightNode
           leavesFound += snLeavesCount
         } else siblingNode = siblingNode.leftNode
       }

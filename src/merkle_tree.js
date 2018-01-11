@@ -85,14 +85,31 @@ class MerkleTree {
         } else siblingNode = siblingNode.leftNode
       }
     }
-    // rule 3: apply consistency audit proof
     return hashNodes
   }
 
-  verifyConsistencyProof () {
-    
+  consistencyAuditProof (nodeHash) {
+    const auditTrail = []
+    const node = this.rootNode.single(n => n.hash === nodeHash)
+    const parent = node.parent
+    return this.buildAuditTrail(auditTrail, parent, node)
   }
-  // TODO verify consistency proof
+
+  verifyConsistencyProof (oldHash, proof) {
+    if (proof.length === 1) return proof[0].hash === oldHash
+    let lhash = proof[proof.length - 2].hash
+    let hidx = proof.length - 1
+    let rhash = secureHash(lhash, proof[hidx].hash)
+    let hash = rhash
+    hidx -= 2
+
+    while (hidx >= 0) {
+      lhash = proof[hidx].hash
+      hash = rhash = secureHash(lhash, rhash)
+      --hidx
+    }
+    return hash === oldHash
+  }
 }
 
 module.exports = {MerkleTree}

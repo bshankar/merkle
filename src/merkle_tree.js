@@ -92,8 +92,8 @@ class MerkleTree {
   consistencyAuditProof (nodeHash) {
     const auditTrail = []
     const node = this.rootNode.single(n => n.hash === nodeHash)
-    const parent = node.parent
-    return this.buildAuditTrail(auditTrail, parent, node)
+    this.buildAuditTrail(auditTrail, node.parent, node)
+    return auditTrail
   }
 
   verifyConsistencyProof (oldHash, proof) {

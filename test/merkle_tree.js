@@ -63,4 +63,21 @@ describe('MerkleTree', function () {
       })
     })
   })
+
+  describe('build tree with 6 leaves', function () {
+    const nodes = ['hi', 'there', 'what', 'is', 'up', '?']
+    const mt = new MerkleTree()
+    mt.nodes = mt.leaves = nodes.map(s => new MerkleNode(s))
+    mt.buildTree()
+    it('consistency proof of first 3 nodes', function () {
+      const cp = mt.consistencyProof(3)
+      assert.equal(cp.length, 2)
+      assert.equal(cp[0].hash, secureHash(secureHash('hi') + secureHash('there')))
+      assert.equal(cp[1].hash, secureHash('what'))
+    })
+    it('consistency proof of first 4 node', function () {
+      const cp = mt.consistencyProof(4)
+      assert.equal(cp.length, 1)
+    })
+  })
 })

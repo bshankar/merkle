@@ -79,5 +79,9 @@ describe('MerkleTree', function () {
       const cp = mt.consistencyProof(4)
       assert.equal(cp.length, 1)
     })
+    it('verify consistency proof returns true for 3', function () {
+      const oldHash = secureHash(secureHash(secureHash('hi') + secureHash('there')) + secureHash('what'))
+      assert.equal(mt.verifyConsistencyProof(oldHash, mt.consistencyProof(3)), true)
+    })
   })
 })

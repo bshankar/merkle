@@ -19,8 +19,9 @@ class MerkleNode {
     }
   }
 
-  isLeaf () {
-    return this.leftNode === null && this.rightNode === null
+  isLeaf (node) {
+    if (node === undefined) node = this
+    return node.leftNode === null && node.rightNode === null
   }
 
   computeHash (msg) {
@@ -54,14 +55,23 @@ class MerkleNode {
     return this.hash === secureHash(this.leftNode.hash + this.rightNode.hash)
   }
 
+  where (f, node, arr = []) {
+    // find all the children satisfying the condition
+    if (node === undefined) node = this
+    if (node === null) return arr
+    if (this.isLeaf(node) === true) {
+      if (f(node) === true) {
+        return [...arr, node]
+      }
+      return arr
+    }
+    return [...this.where(f, node.leftNode, arr),
+            ...this.where(f, node.rightNode, arr)]
+  }
+
   getLeaves (node, leaves = []) {
     // get leaves under this node
-    if (node === null) return leaves
-    if (node.leftNode === null && node.rightNode === null) {
-      return [...leaves, node]
-    }
-    return [...this.getLeaves(node.leftNode, leaves),
-      ...this.getLeaves(node.rightNode, leaves)]
+    return this.where(n => this.isLeaf(n), node)
   }
 }
 

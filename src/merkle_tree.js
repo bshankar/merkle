@@ -70,6 +70,7 @@ class MerkleTree {
     let node = this.leaves[0]
     for (let i = 0; i < n; ++i) node = node.parent
     let leavesFound = node.getLeaves(node).length
+    hashNodes.push(new MerkleProofHash(node.hash, Direction.OLDROOT))
     if (totalLeaves > leavesFound) {
       let siblingNode = node.parent.rightNode
       while (true) {

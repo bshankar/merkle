@@ -1,0 +1,14 @@
+* Merkle
+
+  A simple Merkle tree implementation in Javascript. It contains
+  implementations of data proof, consistency proofs. This project is
+  used in [[https://github.com/bshankar/pyrite.git][Pyrite]].
+
+* Usage
+
+#+BEGIN_SRC shell
+git clone git@github.com:bshankar/merkle.git
+cd merkle
+npm i
+npm test  # To run the tests
+#+END_SRC
